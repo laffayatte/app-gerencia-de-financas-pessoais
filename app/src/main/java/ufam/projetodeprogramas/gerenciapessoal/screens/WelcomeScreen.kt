@@ -1,6 +1,7 @@
 package ufam.projetodeprogramas.gerenciapessoal.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,9 +53,14 @@ fun WelcomeScreen(onNavigateToSummary: () -> Unit) {
             onClick = { onNavigateToSummary() },
             modifier = Modifier
                 .padding(10.dp)
-                .size(140.dp, 40.dp)
+                .size(120.dp, 45.dp)
         ) {
-            Text(text = "Entrar", fontSize = 20.sp)
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text(text = "Entrar", fontSize = 20.sp)
+            }
         }
     }
 }
