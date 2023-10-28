@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ufam.projetodeprogramas.gerenciapessoal.screens.CategoryScreen
 import ufam.projetodeprogramas.gerenciapessoal.screens.NavigationScreen
 import ufam.projetodeprogramas.gerenciapessoal.screens.SummaryScreen
 import ufam.projetodeprogramas.gerenciapessoal.ui.theme.GerenciaFinancasPessoaisTheme
@@ -18,6 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             GerenciaFinancasPessoaisTheme {
                 val navController = rememberNavController()
+
                 NavHost(
                     navController = navController,
                     startDestination = "navigationScreen"
@@ -26,7 +28,10 @@ class MainActivity : ComponentActivity() {
                         NavigationScreen(navController)
                     }
                     composable("summaryScreen") {
-                        SummaryScreen()
+                        SummaryScreen(navController)
+                    }
+                    composable("categoryScreen") {
+                        CategoryScreen(navController)
                     }
                 }
                 val onBackPressedCallback = object : OnBackPressedCallback(true) {
