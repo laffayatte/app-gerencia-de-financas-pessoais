@@ -4,19 +4,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -28,17 +32,27 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
+import ufam.projetodeprogramas.gerenciapessoal.Events.CategoriesEvent
 import ufam.projetodeprogramas.gerenciapessoal.R
+import ufam.projetodeprogramas.gerenciapessoal.components.AddCategoryDialog
 import ufam.projetodeprogramas.gerenciapessoal.components.CustomNavigationDrawerItemColors
+import ufam.projetodeprogramas.gerenciapessoal.components.EditCategoryDialog
+import ufam.projetodeprogramas.gerenciapessoal.dataclasses.CategoriesState
+import ufam.projetodeprogramas.gerenciapessoal.interfaces.CategoriesDAO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryScreen(navController: NavController){
+fun CategoryScreen(
+    state: CategoriesState,
+    onEvent: (CategoriesEvent) -> Unit,
+    navController: NavController,
+    categoriesDAO: CategoriesDAO
+){
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
 
@@ -92,41 +106,73 @@ fun CategoryScreen(navController: NavController){
                 )
             },
             floatingActionButton = {
-                Box(
+                FloatingActionButton(
+                    onClick = { onEvent(CategoriesEvent.AddShowDialog) },
                     modifier = Modifier
-                        .clip(RoundedCornerShape(100))
+                        .padding(16.dp)
+                        .padding(bottom = 16.dp),
+                    containerColor = colorResource(id = R.color.orange)
                 ) {
-                    IconButton(
-                        onClick = { /*TODO*/ },
-                        colors = IconButtonDefaults.iconButtonColors(
-                            colorResource(id = R.color.orange)
-                        )
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = "Menu",
-                            tint = colorResource(id = R.color.white)
-                        )
-                    }
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Adicionar",
+                    )
                 }
             },
         ){ innerPadding ->
-            Column(
+            if (state.isAddingCategory){
+                AddCategoryDialog(
+                    state = state,
+                    onEvent = onEvent,
+                    modifier = Modifier
+                        .padding(innerPadding)
+                )
+            }
+            if (state.isEditCategory) {
+                EditCategoryDialog(
+                    categoryToEdit = state.category,
+                    onEvent = onEvent,
+                    modifier = Modifier.padding(innerPadding),
+                )
+            }
+
+            LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                Text(
-                    modifier = Modifier.padding(8.dp),
-                    text =
-                    """
-                    This is an example of a scaffold. It uses the Scaffold composable's parameters to create a screen with a simple top app bar, bottom app bar, and floating action button.
+                items(state.categories){ category ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth().background(colorResource(id = R.color.white)),
+                    ){
+                        Column (
+                            modifier = Modifier.weight(1f)
+                        ){
+                            Text(
+                                text = category.category,
+                                fontSize = 20.sp,
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
+                        IconButton(
+                            onClick = { onEvent(CategoriesEvent.deleteCategory(category)) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Delete Category"
+                            )
+                        }
+                        IconButton(
+                            onClick = { onEvent(CategoriesEvent.editShowDialog); onEvent(CategoriesEvent.setSelectedCategory(category))}
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Create,
+                                contentDescription = "Edit Category"
+                            )
+                        }
+                    }
 
-                    It also contains some basic inner content, such as this text.
-
-                    You have pressed the floating action button times.
-                """.trimIndent(),
-                )
+                }
             }
         }
     }
