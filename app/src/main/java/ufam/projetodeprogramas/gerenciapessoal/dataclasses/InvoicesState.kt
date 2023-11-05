@@ -2,7 +2,7 @@ package ufam.projetodeprogramas.gerenciapessoal.dataclasses
 
 import ufam.projetodeprogramas.gerenciapessoal.viewmodels.SortedType
 
-data class InvoicesState (
+data class InvoicesState(
     val invoiceString: String = "",
     val invoice: Float = 0.0f,
     val incomes: Float = 0.0f,

@@ -31,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
@@ -77,7 +78,6 @@ fun InvokesScreen(
             )
         )
     }
-
     Scaffold(
         containerColor = colorResource(id = R.color.gray),
         topBar = {
@@ -91,7 +91,7 @@ fun InvokesScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = colorResource(id = R.color.orange)),
+                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = colorResource(id = R.color.green_light)),
                 actions = {
                     IconButton(
                         onClick = {onInvokeEvent(InvoicesEvent.saveInvoice); navController.popBackStack()},
@@ -141,16 +141,16 @@ fun InvokesScreen(
                         },
                         maxLines = 1,
                         label = {
-                            Text(text = "Valor", color = colorResource(id = R.color.gray))
+                            Text(text = "Valor", color = colorResource(id = R.color.darker_gray))
                         },
                         modifier = Modifier.fillMaxWidth(),
                         colors = TextFieldDefaults.textFieldColors(
                             containerColor = colorResource(id = R.color.white),
-                            focusedIndicatorColor = colorResource(id = R.color.orange),
-                            unfocusedIndicatorColor = colorResource(id = R.color.orange),
-                            cursorColor = colorResource(id = R.color.orange),
-                            textColor = colorResource(id = R.color.orange),
-                            placeholderColor = colorResource(id = R.color.orange),
+                            focusedIndicatorColor = colorResource(id = R.color.green_light),
+                            unfocusedIndicatorColor = colorResource(id = R.color.green_light),
+                            cursorColor = colorResource(id = R.color.green_light),
+                            textColor = colorResource(id = R.color.green_light),
+                            placeholderColor = colorResource(id = R.color.green_light),
                         ),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(onDone = {focusManager.clearFocus(); keybordController?.hide()})
@@ -192,17 +192,17 @@ fun InvokesScreen(
                             onInvokeEvent(InvoicesEvent.setDate(it.text))
                         },
                         label = {
-                            Text(text = "Data", color = colorResource(id = R.color.gray))
+                            Text(text = "Data", color = colorResource(id = R.color.darker_gray))
                         },
                         maxLines = 1,
                         modifier = Modifier.fillMaxWidth(),
                         colors = TextFieldDefaults.textFieldColors(
                             containerColor = colorResource(id = R.color.white),
-                            focusedIndicatorColor = colorResource(id = R.color.orange),
-                            unfocusedIndicatorColor = colorResource(id = R.color.orange),
-                            cursorColor = colorResource(id = R.color.orange),
-                            textColor = colorResource(id = R.color.orange),
-                            placeholderColor = colorResource(id = R.color.orange),
+                            focusedIndicatorColor = colorResource(id = R.color.green_light),
+                            unfocusedIndicatorColor = colorResource(id = R.color.green_light),
+                            cursorColor = colorResource(id = R.color.green_light),
+                            textColor = colorResource(id = R.color.green_light),
+                            placeholderColor = colorResource(id = R.color.green_light),
                         ),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(onDone = {focusManager.clearFocus(); keybordController?.hide()})

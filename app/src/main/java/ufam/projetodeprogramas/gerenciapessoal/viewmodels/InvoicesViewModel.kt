@@ -19,7 +19,7 @@ import ufam.projetodeprogramas.gerenciapessoal.interfaces.InvoicesDAO
 enum class SortedType{
     Invoices,
     Incomes,
-    Expenses
+    Expenses,
 }
 
 class InvoicesViewModel(
@@ -28,14 +28,6 @@ class InvoicesViewModel(
     private val _state = MutableStateFlow(InvoicesState())
     private val _sortedType = MutableStateFlow(SortedType.Invoices)
 
-//    val state = combine(_state, _sortedType){state, sortedType ->
-//        state.copy(
-//            invoice = dao.getAllInvoicesTogether(),
-//            expenses = dao.getAllExpenses(),
-//            incomes = dao.getAllIncomes(),
-//            sortType = sortedType
-//        )
-//    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), InvoicesState())
     val state = combine(_state, _sortedType) { state, sortedType ->
         val invoice = viewModelScope.async(Dispatchers.IO) {
             dao.getAllInvoicesTogether()
@@ -46,7 +38,6 @@ class InvoicesViewModel(
         val incomes = viewModelScope.async(Dispatchers.IO) {
             dao.getAllIncomes()
         }
-
         state.copy(
             invoice = invoice.await(),
             expenses = expenses.await(),

@@ -3,6 +3,7 @@ package ufam.projetodeprogramas.gerenciapessoal.interfaces
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import ufam.projetodeprogramas.gerenciapessoal.dataclasses.Categories
 import ufam.projetodeprogramas.gerenciapessoal.dataclasses.Invoices
 
 @Dao
@@ -27,4 +28,5 @@ interface InvoicesDAO {
 
     @Query("SELECT COUNT(Invoices.invoice)  FROM Invoices WHERE category = :category")
     fun getQuantityOfExpensesByCategory(category: String): Int
+
 }

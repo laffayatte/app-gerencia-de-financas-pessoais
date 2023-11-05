@@ -66,18 +66,18 @@ fun DropDownMenu(
                 .onGloballyPositioned { coordinates ->
                     textfieldSize = coordinates.size.toSize()
                 },
-            label = {Text("Categorias")},
+            label = {Text("Categorias", color= colorResource(id = R.color.darker_gray))},
             trailingIcon = {
                 Icon(icon,"contentDescription",
                     Modifier.clickable { expanded = !expanded })
             },
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = colorResource(id = R.color.white),
-                focusedIndicatorColor = colorResource(id = R.color.orange),
-                unfocusedIndicatorColor = colorResource(id = R.color.orange),
-                cursorColor = colorResource(id = R.color.orange),
-                textColor = colorResource(id = R.color.orange),
-                placeholderColor = colorResource(id = R.color.orange),
+                focusedIndicatorColor = colorResource(id = R.color.green_light),
+                unfocusedIndicatorColor = colorResource(id = R.color.green_light),
+                cursorColor = colorResource(id = R.color.green_light),
+                textColor = colorResource(id = R.color.green_light),
+                placeholderColor = colorResource(id = R.color.green_light),
             )
         )
         DropdownMenu(

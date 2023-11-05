@@ -1,5 +1,6 @@
 package ufam.projetodeprogramas.gerenciapessoal.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -412,39 +413,7 @@ fun SummaryScreen(
 
                         Spacer(modifier = Modifier.padding(8.dp))
                         // Terceiro bloco
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(280.dp)
-                                .shadow(
-                                    elevation = 2.dp,
-                                    shape = RoundedCornerShape(8.dp)
-                                )
-                                .background(Color.White, RoundedCornerShape(8.dp))
-                                .padding(16.dp)
 
-                        ) {
-                            Column (
-                                modifier = Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.Top
-                            ){
-                                Text(text = "Despesas por categoria", fontWeight = FontWeight.Bold, color = colorResource(id = R.color.black))
-
-                                Spacer(modifier = Modifier.size(15.dp))
-
-                                Box(
-                                    modifier = Modifier.padding(start = 35.dp, top = 10.dp)
-                                ){
-                                    PieChart(
-                                        data = mapOf(
-                                            Pair("Sample-1", 150),
-                                            Pair("Sample-2", 120),
-                                            Pair("Sample-3", 110),
-                                        )
-                                    )
-                                }
-                            }
-                        }
                     }
                 }
             }

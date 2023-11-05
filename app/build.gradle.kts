@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "ufam.projetodeprogramas.gerenciapessoal"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "ufam.projetodeprogramas.gerenciapessoal"
         minSdk = 28
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -52,6 +52,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.compose.ui:ui-graphics-android:1.5.4")
     val roomVersion = "2.5.0"
 
     implementation("androidx.room:room-runtime:$roomVersion")
