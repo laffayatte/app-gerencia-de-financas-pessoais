@@ -43,7 +43,6 @@ import ufam.projetodeprogramas.gerenciapessoal.components.AddCategoryDialog
 import ufam.projetodeprogramas.gerenciapessoal.components.CustomNavigationDrawerItemColors
 import ufam.projetodeprogramas.gerenciapessoal.components.EditCategoryDialog
 import ufam.projetodeprogramas.gerenciapessoal.dataclasses.CategoriesState
-import ufam.projetodeprogramas.gerenciapessoal.interfaces.CategoriesDAO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +50,6 @@ fun CategoryScreen(
     state: CategoriesState,
     onEvent: (CategoriesEvent) -> Unit,
     navController: NavController,
-    categoriesDAO: CategoriesDAO
 ){
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()

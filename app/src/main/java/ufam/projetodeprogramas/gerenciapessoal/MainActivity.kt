@@ -14,11 +14,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import ufam.projetodeprogramas.gerenciapessoal.databases.CategoriesDatabase
+import ufam.projetodeprogramas.gerenciapessoal.databases.InvoicesDatabase
 import ufam.projetodeprogramas.gerenciapessoal.screens.CategoryScreen
+import ufam.projetodeprogramas.gerenciapessoal.screens.InvokesScreen
 import ufam.projetodeprogramas.gerenciapessoal.screens.NavigationScreen
 import ufam.projetodeprogramas.gerenciapessoal.screens.SummaryScreen
 import ufam.projetodeprogramas.gerenciapessoal.ui.theme.GerenciaFinancasPessoaisTheme
 import ufam.projetodeprogramas.gerenciapessoal.viewmodels.CategoriesViewModel
+import ufam.projetodeprogramas.gerenciapessoal.viewmodels.InvoicesViewModel
 
 class MainActivity : ComponentActivity() {
     private val db_category by lazy {
@@ -26,6 +29,13 @@ class MainActivity : ComponentActivity() {
             applicationContext,
             CategoriesDatabase::class.java,
             name = "categories_database"
+        ).build()
+    }
+    private val db_invoices by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            InvoicesDatabase::class.java,
+            name = "invoices_database"
         ).build()
     }
 
@@ -38,6 +48,15 @@ class MainActivity : ComponentActivity() {
             }
         }
     )
+    private val InvoicesViewModel by viewModels<InvoicesViewModel>(
+        factoryProducer = {
+            object: ViewModelProvider.Factory{
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return InvoicesViewModel(db_invoices.invoicesDAO) as T
+                }
+            }
+        }
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,6 +64,7 @@ class MainActivity : ComponentActivity() {
             GerenciaFinancasPessoaisTheme {
                 val navController = rememberNavController()
                 val categoryState by CategoryViewModel.state.collectAsState()
+                val invoicesState by InvoicesViewModel.state.collectAsState()
 
                 NavHost(
                     navController = navController,
@@ -54,14 +74,28 @@ class MainActivity : ComponentActivity() {
                         NavigationScreen(navController)
                     }
                     composable("summaryScreen") {
-                        SummaryScreen(navController)
+                        SummaryScreen(
+                            navController = navController,
+                            categoryState = categoryState,
+                            onCategoryEvent = CategoryViewModel::onEvent,
+                            invoicesState = invoicesState,
+                            onInvoiceEvent = InvoicesViewModel::onEvent
+                        )
                     }
                     composable("categoryScreen") {
                         CategoryScreen(
                             state = categoryState,
                             onEvent = CategoryViewModel::onEvent,
                             navController = navController,
-                            categoriesDAO = db_category.categoriesDAO
+                        )
+                    }
+                    composable("addInvokesScreen"){
+                        InvokesScreen(
+                            navController = navController,
+                            state = categoryState,
+                            invoicesState = invoicesState,
+                            onCategoryEvent = CategoryViewModel::onEvent,
+                            onInvokeEvent = InvoicesViewModel::onEvent
                         )
                     }
                 }

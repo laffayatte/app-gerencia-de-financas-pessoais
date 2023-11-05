@@ -17,7 +17,7 @@ import ufam.projetodeprogramas.gerenciapessoal.dataclasses.CategoriesState
 import ufam.projetodeprogramas.gerenciapessoal.interfaces.CategoriesDAO
 
 enum class SortType {
-    BY_NAME
+    BY_NAME,
 }
 
 class CategoriesViewModel(

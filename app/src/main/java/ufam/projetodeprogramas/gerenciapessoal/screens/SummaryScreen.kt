@@ -34,6 +34,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.smallTopAppBarColors
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,16 +47,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
+import ufam.projetodeprogramas.gerenciapessoal.Events.CategoriesEvent
+import ufam.projetodeprogramas.gerenciapessoal.Events.InvoicesEvent
 import ufam.projetodeprogramas.gerenciapessoal.R
 import ufam.projetodeprogramas.gerenciapessoal.components.CircularProgressBar
 import ufam.projetodeprogramas.gerenciapessoal.components.CustomNavigationDrawerItemColors
 import ufam.projetodeprogramas.gerenciapessoal.components.PieChart
+import ufam.projetodeprogramas.gerenciapessoal.dataclasses.CategoriesState
+import ufam.projetodeprogramas.gerenciapessoal.dataclasses.InvoicesState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SummaryScreen(navController: NavController) {
+fun SummaryScreen(
+    navController: NavController,
+    categoryState: CategoriesState,
+    onCategoryEvent: (CategoriesEvent) -> Unit,
+    onInvoiceEvent: (InvoicesEvent) -> Unit,
+    invoicesState: InvoicesState
+) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(invoicesState){
+        onInvoiceEvent(InvoicesEvent.getAllInvoices)
+        onInvoiceEvent(InvoicesEvent.getAllExpenses)
+        onInvoiceEvent(InvoicesEvent.getAllIncomes)
+    }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -142,7 +160,7 @@ fun SummaryScreen(navController: NavController) {
             },
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = { /* Ação ao clicar no FAB */ },
+                    onClick = { navController.navigate("addInvokesScreen") },
                     modifier = Modifier
                         .padding(16.dp)
                         .padding(bottom = 16.dp)
@@ -166,7 +184,7 @@ fun SummaryScreen(navController: NavController) {
                         .background(colorResource(id = R.color.blue_ciano))
                 ){
                     Text(
-                        text = "R$ 100,00",
+                        text = "R$ "+invoicesState.invoice.toString(),
                         modifier = Modifier
                             .align(alignment = Alignment.TopCenter)
                             .padding(top = 16.dp),
@@ -233,7 +251,7 @@ fun SummaryScreen(navController: NavController) {
                                         contentAlignment = Alignment.CenterEnd
                                     ) {
                                         Text(
-                                            text = "R$ 100,00",
+                                            text = "R$ "+ invoicesState.incomes.toString(),
                                             color = Color.Black,
                                             modifier = Modifier
                                                 .padding(end = 12.dp)
@@ -273,7 +291,7 @@ fun SummaryScreen(navController: NavController) {
                                         contentAlignment = Alignment.CenterEnd
                                     ) {
                                         Text(
-                                            text = "R$ 0,00",
+                                            text = "R$ "+ invoicesState.expenses.toString(),
                                             color = Color.Black,
                                             modifier = Modifier
                                                 .padding(end = 12.dp)
@@ -308,13 +326,21 @@ fun SummaryScreen(navController: NavController) {
                                 verticalArrangement = Arrangement.Top
                             ) {
                                 Box(modifier = Modifier.padding(start = 25.dp, top = 45.dp)) {
-                                    CircularProgressBar(percentage = 0.8f, number = 100)
+                                    val difference = invoicesState.incomes + invoicesState.expenses
+                                    val differenceTotal = difference/invoicesState.incomes
+                                    CircularProgressBar(percentage = differenceTotal, number = 100)
                                 }
                                 Spacer(modifier = Modifier.padding(8.dp))
                                 Box(Modifier.padding(start = 40.dp)) {
                                     Text(
-                                        text = "R$ 100,00",
-                                        color = Color.Black,
+                                        text = "R$ " +(invoicesState.incomes + invoicesState.expenses).toString(),
+                                        color = if (invoicesState.incomes + invoicesState.expenses >= 0){
+                                            Color.Green
+                                        } else if(invoicesState.incomes + invoicesState.expenses < 0){
+                                            Color.Red
+                                        } else{
+                                            Color.Black
+                                        },
                                         modifier = Modifier
                                             .padding(end = 12.dp)
                                             .align(alignment = Alignment.CenterEnd)
@@ -342,14 +368,14 @@ fun SummaryScreen(navController: NavController) {
                                     fontSize = 12.sp,
                                     color = colorResource(id = R.color.dark_gray)
                                 )
-                                Text(text = "R$ 100,00", color = Color.Green)
+                                Text(text = "R$ "+invoicesState.incomes.toString() , color = Color.Green)
                                 Spacer(modifier = Modifier.padding(8.dp))
                                 Text(
                                     text = "Despesas consideradas",
                                     fontSize = 12.sp,
                                     color = colorResource(id = R.color.dark_gray)
                                 )
-                                Text(text = "R$ 0,00", color = Color.Red)
+                                Text(text = "R$ "+invoicesState.expenses.toString() , color = Color.Red)
                             }
                         }
 
