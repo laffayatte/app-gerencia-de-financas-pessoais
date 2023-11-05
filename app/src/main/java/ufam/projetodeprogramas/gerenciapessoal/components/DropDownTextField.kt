@@ -55,6 +55,7 @@ fun DropDownMenu(
     Column(Modifier.fillMaxWidth()) {
         OutlinedTextField(
             value = selectedText,
+            readOnly = true,
             onValueChange = {
                 Log.d("InvoicesViewModel", "DropDownMenu: $it")
                 selectedText = it

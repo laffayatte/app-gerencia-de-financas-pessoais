@@ -117,6 +117,11 @@ class InvoicesViewModel(
                     SortedType.Incomes
                 }
             }
+            InvoicesEvent.deleteInvoices -> {
+                viewModelScope.launch {
+                    dao.deleteInvoices()
+                }
+            }
             else -> {}
         }
     }
