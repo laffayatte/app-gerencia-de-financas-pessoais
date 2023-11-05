@@ -327,7 +327,8 @@ fun SummaryScreen(
                             ) {
                                 Box(modifier = Modifier.padding(start = 25.dp, top = 45.dp)) {
                                     val difference = invoicesState.incomes + invoicesState.expenses
-                                    val differenceTotal = difference/invoicesState.incomes
+                                    var differenceTotal = if (difference == 0.0f) 0.0f else difference / invoicesState.incomes
+
                                     CircularProgressBar(percentage = differenceTotal, number = 100)
                                 }
                                 Spacer(modifier = Modifier.padding(8.dp))
