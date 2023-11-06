@@ -1,6 +1,5 @@
 package ufam.projetodeprogramas.gerenciapessoal.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -60,7 +59,6 @@ import ufam.projetodeprogramas.gerenciapessoal.Events.InvoicesEvent
 import ufam.projetodeprogramas.gerenciapessoal.R
 import ufam.projetodeprogramas.gerenciapessoal.components.CircularProgressBar
 import ufam.projetodeprogramas.gerenciapessoal.components.CustomNavigationDrawerItemColors
-import ufam.projetodeprogramas.gerenciapessoal.components.PieChart
 import ufam.projetodeprogramas.gerenciapessoal.dataclasses.CategoriesState
 import ufam.projetodeprogramas.gerenciapessoal.dataclasses.InvoicesState
 
@@ -358,7 +356,11 @@ fun SummaryScreen(
                             ) {
                                 Box(modifier = Modifier.padding(start = 25.dp, top = 45.dp)) {
                                     val difference = invoicesState.incomes + invoicesState.expenses
-                                    var differenceTotal = if (difference == 0.0f) 0.0f else difference / invoicesState.incomes
+                                    val incomes = invoicesState.incomes
+                                    var differenceTotal = 0.0f
+                                    if (incomes != 0.0f){
+                                        differenceTotal = if (difference == 0.0f) 0.0f else difference / incomes
+                                    }
 
                                     CircularProgressBar(percentage = differenceTotal, number = 100)
                                 }
