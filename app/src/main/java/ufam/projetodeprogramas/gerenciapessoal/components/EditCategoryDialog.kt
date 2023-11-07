@@ -5,8 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -36,12 +40,9 @@ fun EditCategoryDialog(
                 modifier = Modifier
                     .clip(RoundedCornerShape(50))
                     .background(colorResource(id = R.color.purple_500))
-                    .padding(8.dp)
+                    .padding(12.dp)
             ) {
-                Text(
-                    text = "Editar",
-                    color = colorResource(id = R.color.gray),
-                )
+                Icon(imageVector = Icons.Default.Edit, contentDescription = null)
             }
         },
         dismissButton = {
@@ -50,12 +51,9 @@ fun EditCategoryDialog(
                 modifier = Modifier
                     .clip(RoundedCornerShape(50))
                     .background(colorResource(id = R.color.purple_500))
-                    .padding(8.dp)
+                    .padding(12.dp)
             ) {
-                Text(
-                    text = "Cancelar",
-                    color = colorResource(id = R.color.gray),
-                )
+                Icon(imageVector = Icons.Default.Close, contentDescription = null)
             }
         },
         title = { Text(text = "Editar categoria") },
